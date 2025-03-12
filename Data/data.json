@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Livro A",
+    "author": "Autor X",
+    "description": null,
+    "published_year": 2020
+  },
+  {
+    "id": 2,
+    "title": "Livro A",
+    "author": "Autor X",
+    "description": null,
+    "published_year": 2020
+  }
+]
