@@ -16,5 +16,18 @@ namespace Rest.Services
             var books = JsonSerializer.Deserialize<List<BookModel>>(jsonData);
             return books ?? new List<BookModel>();
         }
+
+        public void AddBook(BookModel newBook)
+        {
+            var books = GetBooks();
+            newBook.id = books.Count > 0 ? books.Max(b => b.id)+1 : 1;
+
+            books.Add(newBook);
+
+            var updatedJson = JsonSerializer.Serialize(books, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(_filePath, updatedJson);
+
+
+        }
     }
 }

@@ -21,5 +21,17 @@ namespace Rest.Controllers
         {
             return Ok(_bookService.GetBooks());
         }
+
+        [HttpPost]
+        public IActionResult AddBook([FromBody] BookModel newBook)
+        {
+            if (newBook == null)
+            {
+                return BadRequest("O livro não pode ser nulo.");
+            }
+
+            _bookService.AddBook(newBook);
+            return CreatedAtAction(nameof(Get), new { id = newBook.id }, newBook);
+        }
     }
 }
