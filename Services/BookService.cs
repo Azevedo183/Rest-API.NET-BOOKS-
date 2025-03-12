@@ -39,13 +39,32 @@ namespace Rest.Services
 
         }
 
-        public BookModel? GetBookById(int id)
+        public async Task<BookModel?> GetBookById(int id)
         {
-            if (!File.Exists(_filePath)) return null;
+            if (!File.Exists(_filePath))
+                return null;
 
-            var jsonData = File.ReadAllText(_filePath);
+            // Leitura assíncrona do arquivo
+            string jsonData = await File.ReadAllTextAsync(_filePath);
             var books = JsonSerializer.Deserialize<List<BookModel>>(jsonData);
             return books?.FirstOrDefault(b => b.id == id);
+        }
+
+        public async Task<string?> GetOpenLibraryDataAsync(string title)
+        {
+            Console.WriteLine($"Iniciando busca por: {title}");
+            string formattedTitle = title.Replace(" ", "+").ToLower();
+            string url = $"https://openlibrary.org/search.json?title={formattedTitle}";
+            Console.WriteLine($"URL gerada: {url}");
+
+            try
+            {
+                return await _httpClient.GetStringAsync(url);
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
         }
 
         public async Task<string> SearchBooks(string query)

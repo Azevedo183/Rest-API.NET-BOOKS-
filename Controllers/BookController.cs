@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rest.Models;
 using Rest.Services;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Rest.Controllers
 {
@@ -34,14 +36,26 @@ namespace Rest.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<BookModel> GetBook(int id)
+        public async Task<IActionResult> GetBook(int id)
         {
-            var book = _bookService.GetBookById(id);
-            if (book == null)
+            var localBook = await _bookService.GetBookById(id);
+            if (localBook == null)
             {
                 return NotFound();
             }
-            return Ok(book);
+
+            var openLibraryData = await _bookService.GetOpenLibraryDataAsync(localBook.title);
+
+            if (openLibraryData == null)
+            {
+                return Ok(new { LocalBook = localBook });
+            }
+
+            return Ok(new
+            {
+                LocalBook = localBook,
+                OpenLibraryData = openLibraryData
+            });
         }
 
         [HttpGet("search")]
