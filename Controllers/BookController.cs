@@ -38,6 +38,7 @@ namespace Rest.Controllers
         public ActionResult<List<BookModel>> GetBook(int id)
         {
             return Ok(_bookService.GetBookById(id));
+
         }
     }
 }

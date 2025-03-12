@@ -30,7 +30,7 @@ namespace Rest.Services
 
         }
 
-        public BookModel? GetBookById(int id) // Renomeei para melhorar a semântica
+        public BookModel? GetBookById(int id)
         {
             if (!File.Exists(_filePath)) return null;
 
