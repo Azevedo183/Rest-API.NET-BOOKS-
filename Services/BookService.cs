@@ -29,5 +29,14 @@ namespace Rest.Services
 
 
         }
+
+        public BookModel? GetBookById(int id) // Renomeei para melhorar a semântica
+        {
+            if (!File.Exists(_filePath)) return null;
+
+            var jsonData = File.ReadAllText(_filePath);
+            var books = JsonSerializer.Deserialize<List<BookModel>>(jsonData);
+            return books?.FirstOrDefault(b => b.id == id);
+        }
     }
 }

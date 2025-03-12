@@ -33,5 +33,11 @@ namespace Rest.Controllers
             _bookService.AddBook(newBook);
             return CreatedAtAction(nameof(Get), new { id = newBook.id }, newBook);
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<List<BookModel>> GetBook(int id)
+        {
+            return Ok(_bookService.GetBookById(id));
+        }
     }
 }
