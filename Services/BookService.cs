@@ -1,25 +1,20 @@
 ﻿using Rest.Models;
 using System.Text.Json;
 
-public class BookService
+namespace Rest.Services
+
 {
-    private readonly string _filePath;
-
-    public BookService()
+    public class BookService
     {
-        var basePath = AppDomain.CurrentDomain.BaseDirectory;
-        _filePath = Path.Combine(basePath, "Data", "dados.json");
-    }
+        private readonly string _filePath = "./Data/data.json";
 
-    public List<BookModel> GetBooks()
-    {
-        if (!File.Exists(_filePath))
+        public List<BookModel> GetBooks()
         {
-            return new List<BookModel>();
-        }
+            if (!File.Exists(_filePath)) return new List<BookModel>();
 
-        var jsonData = File.ReadAllText(_filePath);
-        var books = JsonSerializer.Deserialize<List<BookModel>>(jsonData);
-        return books ?? new List<BookModel>();
+            var jsonData = File.ReadAllText(_filePath);
+            var books = JsonSerializer.Deserialize<List<BookModel>>(jsonData);
+            return books ?? new List<BookModel>();
+        }
     }
 }
