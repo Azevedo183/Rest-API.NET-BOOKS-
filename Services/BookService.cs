@@ -56,24 +56,21 @@ namespace Rest.Services
 
             try
             {
-                // Faz as duas requisições em paralelo
                 var responseTitleTask = _httpClient.GetStringAsync(urlTitle);
                 var responseAuthorTask = _httpClient.GetStringAsync(urlAuthor);
 
-                // Aguarda ambas completarem
                 await Task.WhenAll(responseTitleTask, responseAuthorTask);
 
-                // Combina os resultados em um JSON estruturado
                 var combinedResult = new
                 {
                     TitleResults = JsonDocument.Parse(responseTitleTask.Result).RootElement,
                     AuthorResults = JsonDocument.Parse(responseAuthorTask.Result).RootElement
                 };
 
-                // Retorna o JSON formatado
+
                 return JsonSerializer.Serialize(combinedResult, new JsonSerializerOptions
                 {
-                    WriteIndented = true // Formatação bonita (opcional)
+                    WriteIndented = true
                 });
             }
             catch (HttpRequestException)
